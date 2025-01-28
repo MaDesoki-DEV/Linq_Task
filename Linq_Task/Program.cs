@@ -29,7 +29,7 @@ namespace Linq_Task
         public static T CustomSingleOrDefault<T>(this T[] x, Predicate<T> Cond)
         {
             bool wasFoundOnce = false;
-            T requiredElement;
+            T requiredElement = default;
 
             for (int i = 0; i < x.Length; i++)
             {
@@ -43,7 +43,7 @@ namespace Linq_Task
                 }
             }
 
-            return default;
+            return wasFoundOnce ? requiredElement : default;
         }
 
         public static T[] CustomOrderBy<T>(this T[] x) where T : INumber<T>
@@ -89,13 +89,27 @@ namespace Linq_Task
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            int[] arr = { 5, 3, 4, 8, 6, 4, 2, 8, 3, 2, 1, 9 };
 
-            int[] arr = { 2, 3, 4, 8, 6, 4, 2, 8, 3, 2, 1 };
+            Console.WriteLine($"CustomFirst: {arr.CustomFirst(n => n > 3)}");
+
+            Console.WriteLine($"CustomLastOrDefault: {arr.LastOrDefault(n => n > 1)}");
+
+            Console.WriteLine($"CustomSingleOrDefault: {arr.CustomSingleOrDefault(n => n > 8)}");
+
+            foreach (var item in arr.CustomOrderBy())
+            {
+                Console.WriteLine($"{item}");
+            }
+
+            foreach (var item in arr.CustomDistinct())
+            {
+                Console.WriteLine($"{item}");
+            }
 
             foreach (var item in arr.CustomeWhere(n=>n>5))
             {
-                Console.WriteLine(item);
+                Console.WriteLine($"{item}");
             }
             
         }
